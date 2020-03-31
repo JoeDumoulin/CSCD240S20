@@ -1,0 +1,409 @@
+\documentclass[10pt]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+
+\usepackage[T1]{fontenc}
+\usepackage{newunicodechar}
+\usepackage[utf8]{inputenc}
+
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+% For pseudo codes
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+%
+
+\usepackage[cache=false]{minted}
+
+\usepackage{multirow}
+\usepackage[none]{hyphenat}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\sloppy 
+%\usebackgroundtemplate
+
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\setbeamercolor{background canvas}{bg=gray!20}
+
+\title{Lecture 1}
+\subtitle{C and Linux Background}
+\date{Mar 30, 2020}
+\author{Joe Dumoulin}
+\institute{Eastern Washington University}
+
+
+% logo of ewu
+\logo{\includegraphics[width=1cm]{../media/V_spot_EWUlogo.png}\hfill}
+\newcommand{\nologo}{\setbeamertemplate{logo}{}} % command to set the logo to nothing
+\newcommand{\congress}{Mar 30 - Jun 12 2020 CSCD 240-01}
+
+\titlegraphic{\small\center C and Linux Programming
+\\Eastern Washington University\\Computer Science\\March 30th – June 12th, 2020
+
+\vspace{-15mm}\flushright\includegraphics[height=1.50cm]{../media/V_spot_EWUlogo.png}}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,center]{institute in head/foot}%
+    \usebeamerfont{abstract}%
+    \congress
+  \end{beamercolorbox}%
+
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{institute in head/foot}%
+    \usebeamerfont{abstract} 
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  
+}
+\makeatother
+
+
+
+
+% Document begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motivation and History} 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Motivation}
+What is C?
+
+C was initially developed by Dennis Ritchie between 1969 and 1973 at AT\&T Bell Lab.
+
+Unix OS is written in C.
+
+Many other languages borrow from C,
+
+Including C\#, D, Java, JavaScript, Limbo, LPC, Objective-C, Perl, PHP, Python, Verilog (hardware description language) and Unix's C shell. 
+
+    
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Motivation}
+Why C?
+\begin{itemize}
+	\item C is cross-platform.
+	\begin{itemize}
+		\item[--] A standards-compliant and portably written C program can be compiled for a very wide variety of computer platforms.
+from embedded microcontrollers to supercomputers.
+	\end{itemize}
+	\item C is versatile. 
+	\begin{itemize}
+		\item[--] Suitable for embedded systems, device drivers, OS kernels, small command-line utilities, large desktop applications, DBMS's, implementing other programming languages, and so on.
+	\end{itemize}
+
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Motivation}
+Why C?
+\begin{itemize}
+	\item C is fast.
+	\begin{itemize}
+		\item[--] Widely used to develop systems that demand performance.
+		\item[--] OS, embedded and real-time systems, communication systems.
+		\item[--] Most C implementations compile directly to machine code, and the programmer has full power over what happens at the machine level.
+		\item[--] Even part of Java Virtual Machine is implemented in C/C++.
+		\item C remains very popular after 40+ years: 
+		\item \hyperlink{https://pypl.github.io/PYPL.html}{pypl}
+		\item \hyperlink{https://www.tiobe.com/tiobe-index/}{TIOBE}
+	\end{itemize}
+
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Motivation}
+What is Linux? Is it UNIX? No.
+
+"Unix (trademarked as UNIX) is a family of multitasking, multiuser computer operating systems that derive from the original AT\&T Unix, development starting in the 1970s at the Bell Labs research center by Ken Thompson, Dennis Ritchie, and others."
+- Wikipedia
+    
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Motivation}
+What is Linux? Is it UNIX? No.
+
+It's UNIX-like!
+
+"Linux is a family of open source Unix-like operating systems based on the Linux kernel,[11] an operating system kernel first released on September 17, 1991, by Linus Torvalds. Linux is typically packaged in a Linux distribution."
+- Wikipedia
+
+Sometimes you will see *NIX    
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Motivation}
+Why Linux?
+
+\begin{itemize}
+\item Linux is used to run some of the largest and most popular services in the world.
+\item Linux is open source, usually free and easy to install and administer in a secure way.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{C and Linux}
+Why C and Linux?
+    \begin{itemize}
+        \item Unix and Linux (like most modern operating systems) are written in C.
+
+        \item Most services that work with the operating system are written in C.
+    \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The C Programming Language}
+C Programs
+    \begin{itemize}
+        \item C is an imperative (procedural) language.
+        \begin{itemize}
+			\item Programmers provide steps about how to solve a problem.
+			\item Programming task is broken into a collection of variables, data structures, and subroutines (functions).
+		\end{itemize}
+		\item Whereas, in OO programming like Java, 
+		\begin{itemize}
+			\item We break down a programming task into objects that expose behavior and data using interfaces.
+		\end{itemize}
+
+    \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Hello World!}
+\begin{columns}
+\column{0.6\textwidth}
+
+	\begin{block}{Hello World! in C}
+	\fontsize{8pt}{16pt}\selectfont
+	\tikz[baseline,remember picture]{\node[,anchor=base] (t1){}}
+		\begin{minted}{c}
+
+// Hello.c - hello world! in C.
+// compile with gcc -o hello hello.c
+//
+#include <stdio.h>
+
+int main()
+{
+  char* hello = "Hello World!\n";
+  printf("%s", hello);
+  return 0;
+}		
+		\end{minted}
+		
+	\end{block}
+\column{0.4\textwidth}
+{
+\fontsize{10pt}{25pt}\selectfont
+\tikz[baseline,remember picture]{\node[fill=red!20,anchor=base] (c1){Comments}}
+
+\tikz[baseline,remember picture]{\node[fill=red!20,anchor=base] (c2){Included Module}}
+
+\tikz[baseline,remember picture]{\node[fill=red!20,anchor=base] (c3){Main Function}}
+}
+{
+\fontsize{10pt}{30pt}\selectfont
+\tikz[baseline,remember picture]{\node[fill=red!20,anchor=base] (c4){Define A String}}
+
+\tikz[baseline,remember picture]{\node[fill=red!20,anchor=base] (c5){Formatted Printing}}
+
+\tikz[baseline,remember picture]{\node[fill=red!20,anchor=base] (c6){Return Value}}
+}
+\end{columns}
+
+%arrows are defined here
+\begin{tikzpicture}[remember picture,overlay] 
+ \path[draw=blue,thick,->] (c1.west) to [out=1, in=1,distance=0.0in] ([yshift=-0.4in, xshift=2.0in]t1.south);
+ \path[draw=blue,thick,->] (c2.west) to [out=1, in=1,distance=0.0in] ([yshift=-1.0in, xshift=1.2in]t1.south);
+ \path[draw=blue,thick,->] (c3.west) to [out=1, in=1,distance=0.0in] ([yshift=-1.5in, xshift=.8in]t1.south);
+ \path[draw=blue,thick,->] (c4.west) to [out=1, in=1,distance=0.0in] ([yshift=-2.0in, xshift=1.9in]t1.south);
+ \path[draw=blue,thick,->] (c5.west) to [out=1, in=1,distance=0.0in] ([yshift=-2.3in, xshift=1.4in]t1.south);
+ \path[draw=blue,thick,->] (c6.west) to [out=1, in=1,distance=0.0in] ([yshift=-2.6in, xshift=.8in]t1.south);
+ \end{tikzpicture}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{C is procedural}
+	C programs are mostly composed of function calls
+	\begin{block}{C is programming with procedures or functions}
+	\fontsize{8pt}{14pt}\selectfont
+		\begin{minted}{c}
+// pseudocode to illustrate a typical simple c main function
+int main()
+{
+	int counter;
+	counter = get_value();
+	use_value(counter);
+	
+	printf("%d\n", counter);
+	exit(EXIT_SUCCESS);
+}
+
+
+		\end{minted}
+	\end{block}
+	% draw a shaded area around text
+	\begin{tikzpicture}[remember picture,overlay] 
+	    \path[draw, fill=yellow!20, nearly transparent] (1,1.7)--(4,1.7)--(4,1.3)--(1,1.3)--cycle;
+	    \path[draw, fill=yellow!20, nearly transparent] (1,2.3)--(4.7,2.3)--(4.7,1.9)--(1,1.9)--cycle;
+	    \path[draw, fill=yellow!20, nearly transparent] (1,3.4)--(4,3.4)--(4,3.0)--(1,3.0)--cycle;
+	    \path[draw, fill=yellow!20, nearly transparent] (1,4.0)--(4.4,4.0)--(4.4,3.6)--(1,3.6)--cycle;
+	    
+	\end{tikzpicture}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{From Code to Program}
+The following steps are needed to create a C program:
+\begin{itemize}
+	\item Edit
+	\item Compile
+	\item Link
+	\item Load
+	\item Run!
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Edit a C Program file}
+The human readable program is a text file.
+
+There are many editors that can be used:
+
+\begin{itemize}
+	\item vim
+	\item nano
+	\item emacs
+	\item graphical editors (vscode, sublime, eclipse, etc.)
+\end{itemize}
+
+Open the editor, write or edit the program, save.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Compile your Program}
+Once you have written the program, you compile it to object code.
+This is sometimes called translation, as in translating C source 
+code to object code (direct commands to the CPU and other devices).
+In this class, you use \textbf{gcc} to compile your programs.
+
+%	\begin{block}
+		\begin{minted}{bash}
+>gcc -c hello.c
+>ls
+hello.c  hello.o
+ 		\end{minted}
+%	\end{block}
+
+C code -> assembly -> object (machine) code 
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Compile your Program}
+What is an object file? - Addresses
+\fontsize{8pt}{8pt}\selectfont
+\begin{minted}{bash}
+>objdump -s hello.o
+
+hello.o:     file format elf64-x86-64
+
+Contents of section .text:
+ 0000 554889e5 4883ec10 488d0500 00000048  UH..H...H......H
+ 0010 8945f848 8b45f848 89c6488d 3d000000  .E.H.E.H..H.=...
+ 0020 00b80000 0000e800 000000b8 00000000  ................
+ 0030 c9c3                                 ..              
+Contents of section .rodata:
+ 0000 48656c6c 6f20576f 726c6421 0a002573  Hello World!..%s
+ 0010 00                                   .               
+Contents of section .comment:
+ 0000 00474343 3a202855 62756e74 7520372e  .GCC: (Ubuntu 7.
+ 0010 342e302d 31756275 6e747531 7e31382e  4.0-1ubuntu1~18.
+ 0020 30342e31 2920372e 342e3000           04.1) 7.4.0.    
+Contents of section .eh_frame:
+ 0000 14000000 00000000 017a5200 01781001  .........zR..x..
+ 0010 1b0c0708 90010000 1c000000 1c000000  ................
+ 0020 00000000 32000000 00410e10 8602430d  ....2....A....C.
+ 0030 066d0c07 08000000                    .m...... 
+\end{minted}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Compile your Program}
+What is an object file? - Machine Code
+\fontsize{8pt}{8pt}\selectfont
+\begin{minted}{bash}
+>objdump -d hello.o
+hello.o:     file format elf64-x86-64
+Disassembly of section .text:
+
+0000000000000000 <main>:
+   0:	55                   	push   %rbp
+   1:	48 89 e5             	mov    %rsp,%rbp
+   4:	48 83 ec 10          	sub    $0x10,%rsp
+   8:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax  # f <main+0xf>
+   f:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+  13:	48 8b 45 f8          	mov    -0x8(%rbp),%rax
+  17:	48 89 c6             	mov    %rax,%rsi
+  1a:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi  # 21 <main+0x21>
+  21:	b8 00 00 00 00       	mov    $0x0,%eax
+  26:	e8 00 00 00 00       	callq  2b <main+0x2b>
+  2b:	b8 00 00 00 00       	mov    $0x0,%eax
+  30:	c9                   	leaveq 
+  31:	c3                   	retq
+  
+\end{minted}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Linking your Program}
+compiling and linking is usually a single step
+\begin{minted}{bash}
+# in the old days:
+ld /usr/lib/crt0.o -o hello -lc
+
+# but the modern way is easier: compile and link in one step!
+gcc -o hello hello.c
+
+\end{minted}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Loading your Program}
+To Load a run the program, type a dot and a slash and the name of the program.
+\begin{minted}{bash}
+>./hello
+Hello World!
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Lab 1}
+\begin{itemize}
+\item Install Ubuntu Linux 18.04 Desktop
+\item Install gcc and build essentials
+\item Install git
+\item Become familiar with important command line programs
+\item Download the hello.c code
+\item Compile and run hello.c
+\end{itemize}
+\end{frame}
+
+\end{document}
