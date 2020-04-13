@@ -1,0 +1,431 @@
+\documentclass[10pt]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage{newunicodechar}
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage[russian]{babel}
+\usepackage{arabtex}
+
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+% For pseudo codes
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+%
+
+\usepackage[cache=false]{minted}
+
+\usepackage{multirow}
+\usepackage[none]{hyphenat}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\sloppy 
+%\usebackgroundtemplate
+
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\setbeamercolor{background canvas}{bg=gray!20}
+
+\title{Lecture 3}
+\subtitle{C String Processing and Files}
+\date{Mar 30, 2020}
+\author{Joe Dumoulin}
+\institute{Eastern Washington University}
+
+
+% logo of ewu
+\logo{\includegraphics[width=1cm]{../media/V_spot_EWUlogo.png}\hfill}
+\newcommand{\nologo}{\setbeamertemplate{logo}{}} % command to set the logo to nothing
+\newcommand{\congress}{Mar 30 - Jun 12 2020 CSCD 240-01}
+
+\titlegraphic{\small\center C and Linux Programming
+\\Eastern Washington University\\Computer Science\\March 30th – June 12th, 2020
+
+\vspace{-15mm}\flushright\includegraphics[height=1.50cm]{../media/V_spot_EWUlogo.png}}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,center]{institute in head/foot}%
+    \usebeamerfont{abstract}%
+    \congress
+  \end{beamercolorbox}%
+
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{institute in head/foot}%
+    \usebeamerfont{abstract} 
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  
+}
+\makeatother
+
+
+
+
+% Document begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{C String Processing and Files} 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The Story So Far}
+Basic C syntax
+
+\begin{itemize}
+
+\item Variable Types
+\item Statements
+\item Functions
+
+\end{itemize}
+
+Next we will use these concepts to see how to work with characters and functions in C.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Basic Character Representations - ASCII}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{../media/asciifull.png}
+    \label{fig:ASCII}
+\end{figure}
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{What is ASCII?}
+ASCII stands for "American Standard Code for Information Interchange"
+
+ASCII encodes a symbol into a number and a number to a symbol.  The ASCII table is a codebook for changing numbers into characters.
+
+The first 32 ASCII characters are called \textbf{Control Characters}.  They don't get printed.  Instead they cause actions to occur in the terminal.
+
+the characters from  32-127 are characters used to print words, numbers, punctuation and white space for writing english.
+
+\textbf{ASCII is insufficient for most languages}.  Modern languages and libraries rely on \textbf{Unicode}.
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{A Brief Interlude About Unicode}
+
+Modern applications must support more than english.  For this we use \textbf{Unicode}.
+
+Unicode uses a 32-bit \textbf{code point} to represent each possible character in any language (including made-up languages like elvish and klingon).
+
+\begin{CJK*}{UTF8}{bsmi}
+東 京 
+\end{CJK*}
+
+Москва -  столица России
+
+\begin{RLtext}
+bismi al-ll_ahi al-rra.hm_ani al-rra.hImi
+\end{RLtext}
+
+We will not work with unicode, but we should recognize that for modern programming it is very important.
+   
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Categories of ASCII codes}
+
+Categories of ASCII Codes that we Care About
+
+\begin{tabular}{| l | l |}
+\hline
+Numbers & ASCII Code \\
+\hline
+\hline
+48-57 & Digit symbols ('0' - '9') \\
+\hline
+65-90 & Upper-case letters ('A' - 'Z') \\
+\hline
+97-122 & Lower-case letters ('a' - 'z') \\
+\hline
+33-47 &    \\
+58-64 & Punctuation \\
+133-140 &  \\
+123-126 &  \\
+\hline
+10-13, 32 & Whitespace \\
+\hline
+\end{tabular}
+
+We can write code to recognize these characters.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Finding Character Types in a String}
+
+The following function takes a character as a parameter and tests if the character is an upper-case letter.  It returns 1 if the character is an upper-case letter and zero if it is anything else.
+
+\begin{minted}{c}
+int isupperalphabetic(char c)
+{
+  if (c >= 65 && c <= 90) {
+    return 1;
+  }
+  // else
+  return 0;
+}
+\end{minted}
+
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Finding Character Types in a String}
+
+We can make the function easier to understand by adding some constants for 1 and 0.  This makes it possible for us to talk about the true or false nature of the function.  We can also better understand the function by using the ASCII character symbols instead of numbers for comparison.
+
+\begin{minted}{c}
+#define TRUE 1
+#define FALSE 0
+
+int isupperalphabetic(char c)
+{
+  if (c >= 'A' && c <= 'Z') {
+    return TRUE;
+  }
+  // else
+  return FALSE;
+}
+
+
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Predicate Functions}
+
+Functions and statements that evaluate to True or False are called \textbf{Predicates}.  Predicates can be used to make decisions.  Here is another predicate function that identifies a lower-case letter if it is found:
+
+\begin{minted}{c}
+int isloweralphabetic(char c)
+{
+  if (c >= 'a' && c <= 'z') {
+    return TRUE;
+  }
+  // else
+  return FALSE;
+}
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Composing Functions}
+
+Functions can be combined to make more complex functions.  Here's an example of a predicate function created from combining the two previous predicates.
+
+\begin{minted}{c}
+int isalphabetic(char c)
+{
+  if (isupperalphabetic(c) || isloweralphabetic(c)) {
+    return TRUE;
+  }
+  // else
+  return FALSE;
+}
+\end{minted}
+
+What does this function do?
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Counting Characters in a String}
+
+Another type of function we can make is one that counts the number of characters in a string.  We can use the fact that c strings are terminated with '\textbackslash{0}'.  We can find the length of a string by counting all the characters in the string until we find the terminating character.
+
+\begin{minted}{c}
+
+int stringlength(char* s)
+{
+  int x = 0;
+  while(s[x] != '\0') {
+    x++;
+  }
+  return x;
+}
+
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Writing a Program With Functions}
+We can use these functions to write a program that prints each letter in the string.
+\fontsize{8pt}{8pt}\selectfont
+\begin{minted}{c}
+// include the functions defined above ...
+int main(void)
+{
+  char testStr[] = "When shall we three meet again \
+In thunder, lightning, or in rain?";
+  printf("string = %s\n", testStr);
+  int i;
+  int len = stringlength(testStr);
+  printf("%d\n", len);
+
+  for (i = 0; i < len; i++){
+    char c = testStr[i];
+    if (isalphabetic(c)) {
+      printf("LETTER: %c\n", c);
+    }
+  }
+  return EXIT_SUCCESS;
+}
+\end{minted}
+
+Question: What is the output of this program?
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Another function: Lower-case a Character}
+Each upper case and lower case letter in the ASCII table is separated by a constant.  We can calculate that constant by subtracting two of the codes for a letter like this:
+
+'a' -'A'
+
+The code for this is:
+\begin{minted}{c}
+// if a character is upper case, then change it to lower case
+char lower(char c)
+{
+  if (isupperalphabetic(c)) {
+    return c + ('a'-'A');
+  }
+  // else
+  return c;
+}
+\end{minted}
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Counting Letters in a String}
+We can use the functions we have developed so far to do many things.  Let's do something a little more complcated.  we will write a program that calculates the number of each letter that appears in a string.  
+
+The main function for this task is longer than we have seen so far.
+
+We will need to:
+\begin{itemize}
+\item Define an array of 26 numbers (one for each letter) and initialize it
+\item Define a string to process
+\item For each character c in the string,
+\begin{itemize}
+\item If c is an upper case letter, change it to lower case
+\item If c is a letter, add one to that letter's entry in the array
+\item Ignore all other characters
+\end{itemize}
+\item print the contents of the array
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{1. Define and initialize an array}
+
+\begin{minted}{c}
+int main(void)
+{
+  int char_counts[26];  // one aray slot for each letter
+  
+  int i;   // an iterator
+  // initailize counts to zero.
+  for (i = 0; i < 26; i++) {
+    char_counts[i] = 0;
+  }
+....
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{2. Define the string to process}
+
+Define the string, print it, and then print its length.
+
+\begin{minted}{c}
+  char testStr[] = "Accepting the absurdity of everything \
+around us is one step, a necessary experience: it should not \
+become a dead end. It arouses a revolt";
+  printf("string = %s\n", testStr);
+
+  int len = stringlength(testStr);
+  printf("%d\n", len);
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{3. For each character in the string}
+
+\begin{minted}{c}
+...
+  // count characters in the string
+  for (i = 0; i < len; i++){
+    char c = testStr[i];
+    // check for uppercase.  if found then lowercase
+    if (isupperalphabetic(c)) {
+      c =  lower(c);
+    }
+
+    // if c is a character, count it.
+    if (isloweralphabetic(c)) {
+      int j = c - 'a';
+      // char_counts[j] = char_counts[j] + 1;
+      char_counts[j]++; // The same as above
+    }
+  }
+...
+\end{minted}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{4. Print the array}
+For each element in the array, we print the character for that array element and the count.
+\begin{minted}{c}
+...
+  // print each character followed by its count
+  for (i = 0; i < 26; i++) {
+    printf("character: %c appears %d times.\n", i + 'a', char_counts[i]);
+  }
+  return EXIT_SUCCESS;
+}
+\end{minted}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Assignment 2}
+We have used the C Programming Language concepts to build some programs that can process ASCII strings.  We can use these functions to do other things as well.  For example:
+
+\begin{itemize}
+\item Write a function to recognize if a character is a digit.
+\item Write a function to recognize if a character is whitespace.
+\item Write a function that can recognize a number (a consecutive set of digits).
+\item Write a function to recognize words (consecutive letters between spaces and punctuation).
+\end{itemize}
+\end{frame}
+
+\end{document}
