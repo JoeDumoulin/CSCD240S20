@@ -58,7 +58,7 @@ In the following part of the lab, we are assuming that you have already connecte
 
 When we successfully attach to the system, the screen looks like this:
 
-![login image](/home/joe/Documents/CSCD240-001S20/media/ewu_cslinux_login.png) 
+![login image](../../media/ewu_cslinux_login.png) 
 
 The ```$``` is where we can type by clicking  into the window.  If you press ```Enter``` you will see the terfminal advance down the screen.  Note the the mouse does not work in the terminal window.  It can be used to select text though.
 
@@ -69,7 +69,7 @@ For a general overview of linux terminal commands there are many good sources.
 #### Where Are We? - pwd
 When you want to know where you are, you can type the command ```pwd```.  This command tells us where our terminal is currently pointing in the tree of directories on the computer's file system.  the terminal displays the directory information like this:
 
-![pwd output](/home/joe/Documents/CSCD240-001S20/media/pwd_output.png) 
+![pwd output](../../media/pwd_output.png) 
 
 This shows that we are logged on to Eastern's system in our home directory.
 
@@ -97,7 +97,7 @@ Next, type
 
 Now you have changed the current location to be inside the new directory you created.   Your screen should look something like this:
 
-![in the projects directory](/home/joe/Documents/CSCD240-001S20/media/after_cd_projects.png) 
+![in the projects directory](../../media/after_cd_projects.png) 
 
 You can see that the prompt has changed to show the current directory is "projects".
 
@@ -112,7 +112,7 @@ Make sure you are in the projects folder by looking at the command prompt to see
 
 open a window in you browser and navigate to ```https://github.com/JoeDumoulin/CSCD240S20```.  This is my github page for this class.  The browser should display something like the following:
 
-![github class repo](/home/joe/Documents/CSCD240-001S20/media/Github_page.png) 
+![github class repo](../../media/Github_page.png) 
 
 Press the green button on the far right center of the page (Clone or Download) and then observe the text box that appears under "Clone with HTTPS".  This is the name of the repository that we will clone to our linux projects directory.
 
@@ -124,7 +124,7 @@ This should start copying the repository to your projects directory.
 
 When the prompt reappears,   type ```ls``` to see what was created by the clone.  
 
-![git clone](/home/joe/Documents/CSCD240-001S20/media/git_clone.png) 
+![git clone](../../media/git_clone.png) 
 
 next, type 
 
@@ -132,7 +132,7 @@ next, type
 
 You will see something like the following:
 
-![source code directory](/home/joe/Documents/CSCD240-001S20/media/C_source_code.png) 
+![source code directory](../../media/C_source_code.png) 
 
 each for the file ending in ".c" is a C program source file.  We can display the contents of one of these files by using the ```cat``` command.
 
@@ -140,7 +140,7 @@ each for the file ending in ".c" is a C program source file.  We can display the
 
 You should see something like:
 
-![cat hello.c](/home/joe/Documents/CSCD240-001S20/media/cat_hello_c.png) 
+![cat hello.c](../../media/cat_hello_c.png) 
 
 The screen is showing you the source code in the file.  Later on we will learn how to edit the files but for now, we are just going to comple and run ```hello.c```.  
 
@@ -157,7 +157,7 @@ To run the program in the terminal, type the following
 
 You should see something like the following.
 
-![](/home/joe/Documents/CSCD240-001S20/media/Compile_and_run.png) 
+![](../../media/Compile_and_run.png) 
 
 ### Other things to do
 
