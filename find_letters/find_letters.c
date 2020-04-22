@@ -25,13 +25,28 @@ int isloweralphabetic(char c)
   return FALSE;
 }
 
+int isnumeric(char c)
+{
+  int b;
+  if (c >= '0' && c <= '9'){
+    b =  TRUE;
+  }
+  else{
+    b = FALSE;
+  }
+  return b;
+}
+
 int isalphabetic(char c)
 {
+  int b;
   if (isupperalphabetic(c) || isloweralphabetic(c)) {
-    return TRUE;
+    b =  TRUE;
   }
-  // else
-  return FALSE;
+  else {
+    b = FALSE;
+  }
+  return b;
 }
 
 int stringlength(char* s)
@@ -48,7 +63,7 @@ int stringlength(char* s)
 int main(void)
 {
   char testStr[] = "When shall we three meet again \
-In thunder, lightning, or in rain?";
+In thunder, lightning, or in rain? 123456 + 789101112 789224568";
   printf("string = %s\n", testStr);
   int i;
   int len = stringlength(testStr);
@@ -58,6 +73,9 @@ In thunder, lightning, or in rain?";
     char c = testStr[i];
     if (isalphabetic(c)) {
       printf("LETTER: %c\n", c);
+    }
+    if (isnumeric(c)) {
+      printf("DIGIT: %c\n", c);
     }
   }
   return EXIT_SUCCESS;
