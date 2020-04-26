@@ -34,6 +34,14 @@ int isalphabetic(char c)
   return FALSE;
 }
 
+int isnumeric(char c)
+{
+  if (c >= '0' && c <= '9'){
+    return TRUE;
+  }
+  else return FALSE;
+}
+
 int stringlength(char* s)
 {
   int x = 0;
@@ -61,9 +69,14 @@ int main(void)
     char_counts[i] = 0;
   }
 
+  int digit_counts[10];
+  for (i = 0; i< 10; i++) {
+    digit_counts[i] = 0;
+  }
+
   char testStr[] = "Accepting the absurdity of everything \
 around us is one step, a necessary experience: it should not \
-become a dead end. It arouses a revolt";
+become a dead end. It arouses a revolt. 123456 + 789101112 = 789224568";
   printf("string = %s\n", testStr);
   int len = stringlength(testStr);
   printf("%d\n", len);
@@ -82,11 +95,18 @@ become a dead end. It arouses a revolt";
       // char_counts[j] = char_counts[j] + 1;
       char_counts[j]++; // The same as above
     }
+    if (isnumeric(c)) {
+      int j = c - '0';
+      digit_counts[j]++;
+    }
   }
 
   // print each character followed by its count
   for (i = 0; i < 26; i++) {
     printf("character: %c appears %d times.\n", i + 'a', char_counts[i]);
+  }
+  for (i = 0; i < 10; i++) {
+    printf("digit: %c appears %d times.\n", i + '0', digit_counts[i]);
   }
   return EXIT_SUCCESS;
 }
