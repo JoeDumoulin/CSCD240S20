@@ -28,5 +28,5 @@ The file descriptors for ```stdin``` and ```stdout``` are already open when your
 ```
 cat2 ../corpora/carroll-alice.txt > alice-copy.txt
 ```
-This will copy the contents of *alice in wonderland* to  new file in you program's directory. The ```>``` forces ```stdout``` to point at a new file.
+This will copy the contents of *alice in wonderland* to  new file in your program's directory. The ```>``` forces ```stdout``` to point at a new file.
 
