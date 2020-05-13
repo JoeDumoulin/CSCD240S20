@@ -8,7 +8,7 @@
 // Assume null ending strings.
 void stringcpy(char* p1, char* p2)
 {
-  while((*p2++ = *p1++) != '\0') { // while *p1 != 0,
+  while(*p2++ = *p1++) { // while *p1 != 0,
     ;
   }
 }

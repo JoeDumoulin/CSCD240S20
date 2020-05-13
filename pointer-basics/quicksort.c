@@ -35,7 +35,7 @@ int* get_midpoint_pointer(int* left, int* right)
 
 // quicksort - sort an array of ints recursively
 // quicksort works by dividing the array in half 
-// and then sorting each half.  Each half 
+// and then sorting each half.  
 // Parameters:
 //   p1 - the start address of the sort
 //   p2 - the end address of the sort
