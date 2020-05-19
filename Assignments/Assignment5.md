@@ -36,15 +36,16 @@ Test these functions with the following code:
 #include <stdlib>
 int main(void)
 {
-	char* str1 = "Hello World";
-	strlower(str1);
-	printf("%s\n", str1);
-	
-	printf("%c should be 0\n", stringchar(str1, 'h'));
-	printf("%c should be 4\n", stringchar(str1, 'o'));
-	printf("%c should be -1\n", stringchar(str1, 'x'));
-	
-	return EXIT_SUCCESS;
+  char str1[] = "Hello World";
+
+  strlower(str1);
+  printf("%s\n", str1);
+
+  printf("%d should be 0\n", stringchar(str1, 'h'));
+  printf("%d should be 4\n", stringchar(str1, 'o'));
+  printf("%d should be -1\n", stringchar(str1, 'x'));
+
+  return EXIT_SUCCESS;
 }
 
 ```
